@@ -1,27 +1,29 @@
 package com.concrete.demotdd.model;
 
-public class RevenueRequest {
-    private String descricao;
-    private double valor;
+import com.concrete.demotdd.model.interfaces.BalanceChanger;
 
-    public RevenueRequest(String descricao, double valor) {
-        this.descricao = descricao;
-        this.valor = valor;
+public class RevenueRequest implements BalanceChanger {
+    private String description;
+    private double value;
+
+    public RevenueRequest(String description, double value) {
+        this.description = description;
+        this.value = value;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public double getValor() {
-        return valor;
+    public double getValue() {
+        return value;
     }
 
-    public void setValor(double valor) {
-        this.valor = valor;
+    public void setValue(double value) {
+        this.value = value;
     }
 }

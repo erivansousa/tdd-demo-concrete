@@ -4,18 +4,25 @@ import com.concrete.demotdd.exception.BlankDescriptionException;
 import com.concrete.demotdd.exception.InvalidValueException;
 import com.concrete.demotdd.exception.NullDescriptionException;
 import com.concrete.demotdd.model.RevenueRequest;
+import com.concrete.demotdd.repository.BalanceRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 class RevenueAndExpensesServiceTest {
 
+    @Mock
+    BalanceRepository balanceRepository;
+
+    @InjectMocks
     RevenueAndExpensesService revenueAndExpensesService;
 
     @BeforeEach
-    void init() {
-        revenueAndExpensesService = new RevenueAndExpensesService();
-    }
+    void init() { MockitoAnnotations.openMocks(this); }
 
     @Test
     void dadaUmaSolicitacaoComDescricaoNulaDeveLancarUmaNullDescriptionException() {
@@ -57,5 +64,14 @@ class RevenueAndExpensesServiceTest {
                 InvalidValueException.class,
                 () -> revenueAndExpensesService.includeRevenue(revenue)
         );
+    }
+
+    @Test
+    void dadaUmaSolicitacaoDeReceitaValidaDeveGravarNoBancoDeDados() {
+        RevenueRequest revenue = new RevenueRequest("descricao", 10.0);
+
+        revenueAndExpensesService.includeRevenue(revenue);
+
+        Mockito.verify(balanceRepository, Mockito.times(1)).saveNewRevenue(revenue);
     }
 }
